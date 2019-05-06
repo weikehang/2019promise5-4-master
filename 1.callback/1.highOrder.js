@@ -14,3 +14,5 @@ let a = true;
 console.log(fns.isString(a)); // 函数柯里化 // 偏函数
 // 高阶函数
 // lodash after 
+
+
