@@ -21,5 +21,3 @@ fs.readFile("./age.txt","utf8",function (err,data) {
   fn(data);
 });
 
-document.write("<div>wwwww</div>");
-console.log("1111")

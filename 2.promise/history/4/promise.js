@@ -67,6 +67,7 @@ class Promise{
     then(onfulfilled,onrejected){ 
         let promise2;
         promise2 = new Promise((resolve,reject)=>{
+            console.log(this.status)
             if(this.status === 'fulfilled'){
                 setTimeout(()=>{ 
                     try{
