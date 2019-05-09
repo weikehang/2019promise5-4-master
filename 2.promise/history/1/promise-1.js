@@ -40,8 +40,8 @@ class Promise {
     //实例化的时候转入一个回掉函数实行器，实行resolve和reject
     constructor(executor){
 
-        this.value = ""; //为什么成功
-        this.reason = ""; //为什么是失败
+        this.value; //为什么成功
+        this.reason; //为什么是失败
         this.status = "pending"; //状态 成功态和失败态不能同时存在，不能互相转换
 
         this.resolveCallbacks = []; //存放异步成功回掉函数
@@ -54,7 +54,7 @@ class Promise {
               this.value = value;
 
               //遇到异步的时候，遍历resolveCallbacks实行成功回掉函数
-              this.rejectedCallbacks.forEach(fn=>fn())
+              this.resolveCallbacks.forEach(fn=>fn())
           }
         };
 
@@ -81,63 +81,16 @@ class Promise {
 
         //then的时候需要必须返回新的promise
         let promise2;
-        promise2 = new Promise((resolve, reject) => {
-            //在下一个then判断当前状态是fulfilled还是rejected
-            //然后调用onfulfilled还是onrejected将值往下转递
-            //成功的时候施行成功回掉函数
-            console.log(this.status)
-            if (this.status === "fulfilled") {
-              setTimeout(()=>{
-                try {
-                  //x是普通函数还是promise，如果是普通值，直接调用promise2的resolve
-                  //如果是promise 那应该让x这个promise实行.then
-                  let x = onfulfilled(this.value);
-                  resolvePromise(promise2, x, resolve, reject);
-                }catch (e) {
-                  reject(e);
-                }
-              },0);
-            }
+        promise2 = new Promise((resolve, reject)=>{
+          if (this.status === 'pending') {
+            this.resolveCallbacks.push(()=>{
+              onfulfilled(resolve)
+            });
 
-            //失败的时候实行失败回掉函数
-            if (this.status === "rejected") {
-              setTimeout(()=>{
-                try {
-                  let x = onrejected(this.reason);
-                  resolvePromise(promise2, x, resolve, reject);
-                }catch (e) {
-                  reject(e);
-                }
-              },0);
-            }
-
-            //为让异步的resolve,rejected先实行在实行then
-            //所以先将resolve,rejected分别存放在数组
-            if (this.status === "pending") {
-              this.resolveCallbacks.push(()=>{
-                  setTimeout(()=>{
-                    try {
-                      let x = onfulfilled(this.value);
-                      resolvePromise(promise2, x, resolve, reject);
-                    }catch (e) {
-                      reject(e);
-                    }
-                  },0);
-
-                });
-                this.rejectedCallbacks.push(()=>{
-                  setTimeout(()=>{
-                    try {
-                      let x = onrejected(this.reason);
-                      resolvePromise(promise2, x, resolve, reject);
-                    }catch (e) {
-                      reject(e);
-                    }
-                  },0);
-
-                });
-            }
-
+            this.rejectCallbacks.push(()=>{
+              onfulfilled(onrejected)
+            });
+          }
         });
 
         return promise2;
