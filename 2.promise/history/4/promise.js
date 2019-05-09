@@ -29,7 +29,7 @@ let  resolvePromise = (promise2,x,resolve,reject) => {
         }catch(e){
             if(called) return;
             called = true;
-            reject(e);
+            reject(e); 
         }
     }else{
         // x肯定一个常量

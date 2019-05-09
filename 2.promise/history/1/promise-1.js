@@ -1,35 +1,33 @@
 function resolvePromise(promise2, x, resolve, reject) {
-   //判断x的类型 来处理promise2是成功还是失败
-    if (promise2 === x) {
-        return reject(new TypeError("循环引用"));
-    }
-
-    //判断x是不是当前x的then方法，这个then方法可能定义的时候，用object.defineProperty
+    //判断x的类型，来处理promise是成功还是失败
+  //所有的promise都遵循这个规范，不同的人写的promise可能会混用
+  //尽量考虑周全，要考虑别人promise可能出错的情况
   if (typeof x === "function" || (typeof x === "object" && x !== null)) {
-    //尝试获取当前x的值，这个then方法用的object.defindProperty
     let called;
     try {
-      let then = x.then;  //如果方法出错，那就用拒绝promise2
+      let then = x.then;
       if (typeof then === "function") {
-        then.call(x,y=>{
-          if(called) return;
-          called = true;
-          resolvePromise(promise2, y, resolve, reject);
-        },r=>{
-          if(called) return;
-          called = true;
-          reject(r);
-        })
-      } else {
-        resolve(x);
+          //成功状态
+          then.call(x,y=>{
+             if (called) return;
+             called = true;
+             resolvePromise(promise2, y, resolve, reject);//递归调用，把所有resolve返回值传到then中
+          },r=>{
+             if(called) return;
+             called = true;
+            reject(r); //让promise变成
+          })
+      }else{
+        //x 是一个普通的函数，没有then方法
+        resolve(x)
       }
     }catch (e) {
-      if(called) return;
-      called = true;
+       if (called) return;
+       called = true;
       reject(e);
     }
-  }else {
-    // x肯定一个常量
+  }else{
+    //常量
     resolve(x);
   }
 
@@ -82,13 +80,54 @@ class Promise {
         //then的时候需要必须返回新的promise
         let promise2;
         promise2 = new Promise((resolve, reject)=>{
+          if (this.status === "fulfilled") {
+            setTimeout(() => {
+              try {
+                let x =  onfulfilled(this.value);
+                resolvePromise(promise2, x, resolve, reject);
+              }catch (e) {
+                reject(e);
+              }
+
+            },0);
+          }
+
+
+          if (this.status === "rejected") {
+            setTimeout(() => {
+              try {
+                let x = onrejected(this.reason);
+                resolvePromise(promise2, x, resolve, reject);
+              }catch (e) {
+                reject(e);
+              }
+            }, 0);
+
+          }
+
           if (this.status === 'pending') {
             this.resolveCallbacks.push(()=>{
-              onfulfilled(resolve)
+              setTimeout(()=>{
+                try {
+                  let x =  onfulfilled(this.value);
+                  resolvePromise(promise2, x, resolve, reject);
+                }catch (e) {
+                  reject(e);
+                }
+              },0);
+
             });
 
             this.rejectCallbacks.push(()=>{
-              onfulfilled(onrejected)
+              setTimeout(() => {
+                try {
+                  let x =  onrejected(this.reason);
+                  resolvePromise(promise2, x, resolve, reject);
+                }catch (e) {
+                  reject(e);
+                }
+              }, 0);
+
             });
           }
         });
