@@ -205,6 +205,26 @@ Promise.all = function (values) {
 
 };
 
+//race的原理
+//谁先快就选谁
+Promise.race = function (values) {
+  return new Promise((resolve,reject)=>{
+    for (let i = 0; i < values.length; i++) {
+      let current = values[i];
+      if (typeof current === "function" || (typeof current === "object" && current !== null)) {
+        let then = current.then;
+        if (typeof then === "function") {
+          then.call(current,resolve, reject);
+        } else {
+          resolve(current);
+        }
+      } else {
+        resolve(current);
+      }
+    }
+  })
+};
+
 
 
 

@@ -33,19 +33,20 @@ var promise = new Promise((resolve, reject) => {
 
 
 
-
 let p1 = new Promise((resolve, reject) => {
-  resolve('成功了')
+  setTimeout(() => {
+    resolve('success')
+  },1000)
 });
 
 let p2 = new Promise((resolve, reject) => {
-  resolve('success')
+  setTimeout(() => {
+    reject('failed')
+  }, 500)
 });
 
-
-
-Promise.all([1, p2]).then((result) => {
-  console.log(result)               //['成功了', 'success']
+Promise.race([p1, p2]).then((result) => {
+  console.log(result)
 }).catch((error) => {
-  console.log(error)
+  console.log(error)  // 打开的是 'failed'
 });
