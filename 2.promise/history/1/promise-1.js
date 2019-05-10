@@ -118,7 +118,7 @@ class Promise {
 
             });
 
-            this.rejectCallbacks.push(()=>{
+            this.rejectedCallbacks.push(()=>{
               setTimeout(() => {
                 try {
                   let x =  onrejected(this.reason);
@@ -165,6 +165,46 @@ Promise.defer = Promise.defered = function () {
   });
   return dfd;
 };
+
+//promise的原理分析
+//promise需要以数组的形式传需要实行的函数，然后再all方法返回promise对象
+//从数组中拿到数据遍历，看看每一项参数是否是函数还是常量
+//如果是对象或者函数，则需要调用then方法
+//如果是常量
+//最后将得到的结果放在数组存起来resolve出去
+Promise.all = function (values) {
+  return new Promise((resolve,reject)=>{
+    let results = [];
+    let i = 0;
+    let processData =  (value, index)=> {
+        results[index] = value;
+      //如果当成功的个数和当前个数相同就把结果抛出去
+      if (i++ === index) {
+        resolve(results);
+      }
+    };
+
+    for (let i = 0;i<values.length;i++){
+        //获取当前的函数
+        let current = values[i];
+        //判断是函数还是常量
+      if (typeof current === "function" || (typeof current === "object" && typeof current !== "number")) {
+        if (typeof current.then === "function") {
+          current.then(y=>{
+            processData(y, i);
+          },reject)
+        }else{
+          processData(current, i);
+        }
+      } else {
+        //常量
+        processData(current, i);
+      }
+    }
+  })
+
+};
+
 
 
 

@@ -1,5 +1,5 @@
 
-// let Promise = require('./promise-1');
+let Promise = require('./promise-1');
 
 // 1) 循环引用 保证返回的promise不是当前then返回的promise 否则就变成了自己等待自己完成
 /*let p1 = new Promise((resolve,reject)=>{
@@ -44,7 +44,7 @@ let p2 = new Promise((resolve, reject) => {
 
 
 
-Promise.all([p1, p2]).then((result) => {
+Promise.all([1, p2]).then((result) => {
   console.log(result)               //['成功了', 'success']
 }).catch((error) => {
   console.log(error)
