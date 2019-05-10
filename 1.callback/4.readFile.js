@@ -2,7 +2,7 @@
 let fs = require('fs');
 // 1) 异步不能使用try catch
 // 2) 同步“异步的返回结果”  异步“并行“ paralle “串行” series
-// fs.readFile 
+// fs.readFile
 let arr = []; // 保证顺序统一
 let i = 0;
 function fn(data,index){
@@ -17,3 +17,4 @@ fs.readFile('./name.txt','utf8',function(err,data){ // 5s
 fs.readFile('./age.txt','utf8',function(err,data){ // 3s
     fn(data,0);
 });
+
