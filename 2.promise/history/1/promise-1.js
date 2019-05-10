@@ -134,6 +134,38 @@ class Promise {
 
         return promise2;
     }
+
+  catch(rejectFuc) {
+    return this.then(null, rejectFuc);
+  }
 }
+
+//产生个resolve这样，外面可以方便的调用这个方法
+//调用resolve,将值传到then,则需要新的promise
+Promise.resolve = function (value) {
+  return new Promise((resolve, reject)=>{
+    resolve(value);
+  });
+};
+
+//产生一个reject,返回promise对象，通过reject传值到then
+Promise.reject = function (reason) {
+  return new Promise((resolve,reject)=>{
+    reject(reason);
+  })
+};
+
+//暴露一个方法需要返回一个对象，对象上面需要有promise,resolve,reject
+//减少嵌套
+Promise.defer = Promise.defered = function () {
+  let dfd = {};
+  dfd.promise = new Promise((resolve, reject) => {
+    dfd.resolve = resolve;
+    dfd.reject = reject;
+  });
+  return dfd;
+};
+
+
 
 module.exports = Promise;
