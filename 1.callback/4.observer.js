@@ -7,6 +7,7 @@ class Subject {
         this.state = '心情很美丽'
     }
     // 被观察者要提供一个接受观察者的方法
+    
     attach(observer){
         this.observers.push(observer); // 存放所有的观察者
     }
