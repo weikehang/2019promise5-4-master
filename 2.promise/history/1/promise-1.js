@@ -140,6 +140,11 @@ class Promise {
         return promise2;
     }
 
+    //由于finall没有参与任何promise状态的改变，所以调用就实行then就可以了
+    finally(callback) {
+      this.then(callback, callback);
+    }
+
   catch(rejectFuc) {
     return this.then(null, rejectFuc);
   }
