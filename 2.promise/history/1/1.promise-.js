@@ -33,6 +33,7 @@ var promise = new Promise((resolve, reject) => {
 
 
 
+/*
 let p1 = new Promise((resolve, reject) => {
   setTimeout(() => {
     resolve('success')
@@ -49,4 +50,41 @@ Promise.race([p1, p2]).then((result) => {
   console.log(result)
 }).catch((error) => {
   console.log(error)  // 打开的是 'failed'
+});*/
+
+// race的原理
+
+let p1 = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve('success')
+  },1000)
+});
+
+let p2 = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    reject('failed')
+  }, 500)
+});
+
+/*Promise.race = function(values){
+  return new Promise((resolve,reject)=>{
+    for(let i = 0 ; i< values.length;i++){
+      let current = values[i];
+      if((typeof current === 'object' &&  current !==null)|| typeof current === 'function'){
+        let then = current.then;
+        if(typeof then == 'function'){ // 比较哪个promise比较快，谁快用快
+          then.call(current,resolve,reject)
+        }else{
+          resolve(current);
+        }
+      }else{
+        resolve(current);
+      }
+    }
+  });
+}*/
+Promise.race([p1, p2]).then((result) => {
+  console.log(result)
+},err=>{
+  console.log(err)
 });
