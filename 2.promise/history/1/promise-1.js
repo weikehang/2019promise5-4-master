@@ -1,7 +1,12 @@
-function resolvePromise(promise2, x, resolve, reject) {
+ function resolvePromise(promise2, x, resolve, reject) {
     //判断x的类型，来处理promise是成功还是失败
   //所有的promise都遵循这个规范，不同的人写的promise可能会混用
   //尽量考虑周全，要考虑别人promise可能出错的情况
+
+  if(promise2 === x){
+    return reject(new Error("循环引用"));
+  }
+
   if (typeof x === "function" || (typeof x === "object" && x !== null)) {
     let called;
     try {
