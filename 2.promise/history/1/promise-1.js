@@ -167,7 +167,7 @@ Promise.reject = function (reason) {
 
 //暴露一个方法需要返回一个对象，对象上面需要有promise,resolve,reject
 //减少嵌套
-Promise.defer = Promise.defered = function () {
+Promise.defer = Promise.deferred = function () {
   let dfd = {};
   dfd.promise = new Promise((resolve, reject) => {
     dfd.resolve = resolve;
@@ -235,8 +235,6 @@ Promise.race = function (values) {
     }
   })
 };
-
-
 
 
 module.exports = Promise;

@@ -1,5 +1,6 @@
 
 let Promise = require('./promise-1');
+let fs = require('fs');
 
 // 1) 循环引用 保证返回的promise不是当前then返回的promise 否则就变成了自己等待自己完成
 /*let p1 = new Promise((resolve,reject)=>{
@@ -54,7 +55,7 @@ Promise.race([p1, p2]).then((result) => {
 });*/
 
 
-let p1 = new Promise((resolve, reject) => {
+/*let p1 = new Promise((resolve, reject) => {
   reject('success')
 }).then(data=>{
   reject(data);
@@ -64,4 +65,20 @@ let p1 = new Promise((resolve, reject) => {
   console.log(111)
 },err=>{
   console.log(err)
+});*/
+
+
+//延时对象 defer
+function red(url) {
+   let  dfd = Promise.defer();
+   fs.readFile(url,"utf8",(err,data)=>{
+     if(err) dfd.reject(err);
+     dfd.resolve(data);
+   })
+
+  return dfd.promise;
+}
+
+red("name.txt").then(y => {
+  console.log(y);
 });
