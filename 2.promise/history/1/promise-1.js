@@ -86,7 +86,9 @@ class Promise {
         let promise2;
         promise2 = new Promise((resolve, reject)=>{
           if (this.status === "fulfilled") {
+            //这里加了定时器是为了讲定时器里面的内容添加到队列，等到promise2 new成功后在实行定时器里面的内容，讲拿到的promise2传到resolvePromise中
             setTimeout(() => {
+              //这里用的try catch 是为了能将内部的错误传到reject中去的
               try {
                 let x =  onfulfilled(this.value);
                 resolvePromise(promise2, x, resolve, reject);
@@ -104,7 +106,7 @@ class Promise {
                 let x = onrejected(this.reason);
                 resolvePromise(promise2, x, resolve, reject);
               }catch (e) {
-                reject(e);
+                reject(e);。
               }
             }, 0);
 
