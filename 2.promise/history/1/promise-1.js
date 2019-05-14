@@ -142,6 +142,11 @@ class Promise {
         return promise2;
     }
 
+    //由于finall没有参与任何promise状态的改变，所以调用就实行then就可以了
+    finally(callback) {
+      this.then(callback, callback);
+    }
+
   catch(rejectFuc) {
     return this.then(null, rejectFuc);
   }
@@ -164,7 +169,7 @@ Promise.reject = function (reason) {
 
 //暴露一个方法需要返回一个对象，对象上面需要有promise,resolve,reject
 //减少嵌套
-Promise.defer = Promise.defered = function () {
+Promise.defer = Promise.deferred = function () {
   let dfd = {};
   dfd.promise = new Promise((resolve, reject) => {
     dfd.resolve = resolve;
@@ -179,6 +184,7 @@ Promise.defer = Promise.defered = function () {
 //如果是对象或者函数，则需要调用then方法
 //如果是常量
 //最后将得到的结果放在数组存起来resolve出去
+//将所有结果返回才取值
 Promise.all = function (values) {
   return new Promise((resolve,reject)=>{
     let results = [];
@@ -231,8 +237,6 @@ Promise.race = function (values) {
     }
   })
 };
-
-
 
 
 module.exports = Promise;
