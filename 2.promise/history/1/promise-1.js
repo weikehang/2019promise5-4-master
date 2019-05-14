@@ -106,7 +106,7 @@ class Promise {
                 let x = onrejected(this.reason);
                 resolvePromise(promise2, x, resolve, reject);
               }catch (e) {
-                reject(e);。
+                reject(e);
               }
             }, 0);
 
