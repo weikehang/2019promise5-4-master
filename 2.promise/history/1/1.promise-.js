@@ -167,6 +167,7 @@ var arr = [1, [2, [3, 4]]];
 
 function flatten(arr) {
  return arr.reduce(function (prev, next) {
+    //如果是三维数组需要递归
     return prev.concat(Array.isArray(next) ? flatten(next) : next);
   },[]);
 }
