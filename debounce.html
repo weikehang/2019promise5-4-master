@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="IE=edge, chrome=1">
+  <title>debounce</title>
+  <style>
+    #container{
+      width: 100%; height: 200px; line-height: 200px; text-align: center; color: #fff; background-color: #444; font-size: 30px;
+    }
+  </style>
+</head>
+
+<body>
+<div id="container"></div>
+
+<script>
+
+
+  //防抖的原理：你尽管出发事件，但是我一点要在出发n秒之后才实行
+  // 如果你在一个事件触发n秒内又触发，那就以新的事件为准
+  //总之需要等到n秒内不再出发事件，我再实行
+  var count = 1;
+  var container = document.getElementById('container');
+
+  function debounce(func, wait, immediate) {
+    var timeout,result;
+
+    return function () {
+      var context = this;//保存当前this指向对象
+      var args = arguments; //获取函数的参数
+
+      if(timeout) clearTimeout(timeout);//清除以前的定时器，保证最新的
+
+      if (immediate){//立即实行函数
+        var callNow = !timeout;
+        timeout = setTimeout(function () {
+          timeout = null//n秒后取消定时器
+        }, wait);
+
+        //如果已经点击了再不给点击了
+        if(callNow) result = func.apply(context, args);
+
+      }else{
+        timeout = setTimeout(function () {
+          func.apply(context, args)//通过apply调用，指向this对象，并输入参数
+        }, wait);
+      }
+      return result
+    }
+  }
+
+  function getUserAction(e) {
+    console.log(e);
+    container.innerHTML = count++;
+  };
+
+  container.onclick = debounce(getUserAction,1000,true);
+</script>
+</body>
+
+</html>
