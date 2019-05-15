@@ -1,1 +1,1 @@
-let buffer = Beffer.alloc(5);
+require("")
