@@ -115,6 +115,7 @@ var flat = [[0,1],[2,3],[4,5]].reduce(function (a,b) {
 });
 
 console.log(flat);*/
+/*
 var names = ['Alice', 'Bob', 'Tiff', 'Bruce', 'Alice'];
 
 var countedNames = names.reduce(function (allNames, name) {
@@ -126,4 +127,49 @@ var countedNames = names.reduce(function (allNames, name) {
   return allNames
 }, {});
 
-console.log(countedNames)
+console.log(countedNames)*/
+
+//按属性分类
+
+/*
+var people = [
+  { name: 'Alice', age: 21 },
+  { name: 'Alice', age: 20 },
+  { name: 'Jane', age: 20 }
+];
+
+
+var groupBy = function (objectArray,property) {
+  return objectArray.reduce(function (acc, obj) {
+    var key = obj[property];
+    if(!acc[key]){
+      acc[key] = []
+    }
+    acc[key].push(obj);
+    return acc
+  },{});
+};
+console.log(groupBy(people, "name"));*/
+
+/*
+console.time("time");
+let arr = [1,2,1,2,3,5,4,5,3,4,4,4,4];
+let result = arr.sort().reduce((init, current) => {
+  if(init.length === 0 || init[init.length-1] !== current){
+    init.push(current)
+  }
+  return init
+}, []);
+console.log(result); //[1,2,3,4,5]
+console.timeEnd("time");*/
+
+var arr = [1, [2, [3, 4]]];
+
+function flatten(arr) {
+ return arr.reduce(function (prev, next) {
+    return prev.concat(Array.isArray(next) ? flatten(next) : next);
+  },[]);
+}
+
+
+console.log(flatten(arr));
