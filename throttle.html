@@ -4,17 +4,22 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="x-ua-compatible" content="IE=edge, chrome=1">
-  <title>debounce</title>
+  <title>throttle</title>
   <style>
-    #container{
-      width: 100%; height: 200px; line-height: 200px; text-align: center; color: #fff; background-color: #444; font-size: 30px;
+    #container {
+      width: 100%;
+      height: 200px;
+      line-height: 200px;
+      text-align: center;
+      color: #fff;
+      background-color: #444;
+      font-size: 30px;
     }
   </style>
 </head>
 
 <body>
 <div id="container"></div>
-<div id="cancel">取消</div>
 <script>
 
   //节流的原理：如果你持续触发事件，每隔一段时间只会执行一件事
@@ -26,30 +31,88 @@
   var cancel = document.getElementById('cancel');
 
   //使用时间戳
- function throttle(func,wait) {
-   var prv = 0,args,context;
-   return function () {
-     var now = +new Date();
-     args = arguments;
-     context = this;
-     if(now - prv > wait){
-       func.apply(context, args);
-       prv = now;
-     }
-   }
- }
+  function throttleSot(func, wait) {
+    var prv = 0, args, context;
+    return function () {
+      var now = +new Date();
+      args = arguments;
+      context = this;
+      if (now - prv > wait) {
+        func.apply(context, args);
+        prv = now;
+      }
+    }
+  }
+
+  //使用定时器
+  function throttleTimeOut(func, wait) {
+    var timeout;
+    return function () {
+      args = arguments;
+      context = this;
+      if (!timeout) {
+        timeout = setTimeout(function () {
+          timeout = null;
+          func.apply(context, args)
+        }, wait);
+      }
+    }
+  }
+
+  var throttle = function (func,wait,options) {
+    var prv = 0, timeout,context,args;
+
+    if(!options) options = {};
+
+    var letter = function () {
+      now  = +new Date();
+      timeout = null;
+      func.apply(context,args)
+    };
+
+    var throttled = function () {
+      var now  = +new Date();
+      if(!prv && options.leading === false) prv = now;
+
+      //下次出发函数余下的时间
+      var remaining = wait -(now - prv);// wait 10  now - prv  6
+
+      //如果没有余下的时间了或者你修改了系统时间，停止之后（时间到了再施行一下）
+
+      if(remaining <= 0 || remaining > wait ){
+        if (timeout) {
+          clearTimeout(timeout);
+          timeout = null;
+        }
+
+        prv = now;
+        func.apply(context, args);
+      }else if (!timeout && options.trailing !== false) {
+        timeout = setTimeout(letter,remaining)
+      }
+    };
+
+
+    throttled.cancel = function () {
+      clearTimeout(timeout);
+      timeout = null;
+      prv = 0;
+
+    };
+    return throttled;
+
+  };
 
   function getUserAction(e) {
-    console.log(e);
     container.innerHTML = count++;
   };
 
-  var setUseAction  = throttle(getUserAction,1000,true);
+  var setUseAction = throttle(getUserAction, 1000, {
+    // leading:false //禁用第一次施行
+    trailing:false //禁用停止触发回调
+  });
 
   container.onmousemove = setUseAction;
-  document.getElementById("cancel").addEventListener('click', function(){
-    setUseAction.cancel();
-  })
 </script>
 </body>
 
