@@ -14,27 +14,27 @@
 
 <body>
 <div id="container"></div>
-
+<div id="cancel">取消</div>
 <script>
-
 
   //防抖的原理：你尽管出发事件，但是我一点要在出发n秒之后才实行
   // 如果你在一个事件触发n秒内又触发，那就以新的事件为准
   //总之需要等到n秒内不再出发事件，我再实行
   var count = 1;
   var container = document.getElementById('container');
+  var cancel = document.getElementById('cancel');
 
   function debounce(func, wait, immediate) {
     var timeout,result;
 
-    return function () {
+    var debounced = function () {
       var context = this;//保存当前this指向对象
       var args = arguments; //获取函数的参数
 
       if(timeout) clearTimeout(timeout);//清除以前的定时器，保证最新的
 
       if (immediate){//立即实行函数
-        var callNow = !timeout;
+        var callNow = !timeout;//获取定时器的编号
         timeout = setTimeout(function () {
           timeout = null//n秒后取消定时器
         }, wait);
@@ -48,7 +48,15 @@
         }, wait);
       }
       return result
-    }
+    };
+
+    //添加取消函数的方法
+    debounced.cancel = function () {
+      clearTimeout(timeout);
+      timeout = null;
+    };
+
+    return debounced;
   }
 
   function getUserAction(e) {
@@ -56,7 +64,12 @@
     container.innerHTML = count++;
   };
 
-  container.onclick = debounce(getUserAction,1000,true);
+  var setUseAction  = debounce(getUserAction,1000,true);
+
+  container.onmousemove = setUseAction;
+  document.getElementById("cancel").addEventListener('click', function(){
+    setUseAction.cancel();
+  })
 </script>
 </body>
 
