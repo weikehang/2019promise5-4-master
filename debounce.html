@@ -27,12 +27,14 @@
   function debounce(func, wait, immediate) {
     var timeout,result;
 
+    //定义debounced函数，方便在器属性上面添加新的cancel取消函数
     var debounced = function () {
       var context = this;//保存当前this指向对象
       var args = arguments; //获取函数的参数
 
       if(timeout) clearTimeout(timeout);//清除以前的定时器，保证最新的
 
+      //如果immediate是true的话，会有result返回值，否则无
       if (immediate){//立即实行函数
         var callNow = !timeout;//获取定时器的编号
         timeout = setTimeout(function () {
@@ -43,6 +45,7 @@
         if(callNow) result = func.apply(context, args);
 
       }else{
+        //n秒后施行func方法
         timeout = setTimeout(function () {
           func.apply(context, args)//通过apply调用，指向this对象，并输入参数
         }, wait);

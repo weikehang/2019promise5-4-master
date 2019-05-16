@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="IE=edge, chrome=1">
+  <title>debounce</title>
+  <style>
+    #container{
+      width: 100%; height: 200px; line-height: 200px; text-align: center; color: #fff; background-color: #444; font-size: 30px;
+    }
+  </style>
+</head>
+
+<body>
+<div id="container"></div>
+<div id="cancel">取消</div>
+<script>
+
+  //节流的原理：如果你持续触发事件，每隔一段时间只会执行一件事
+  // 根据首次是否执行以及结束后是否执行，效果有所不同，实现的方式也不同
+  //我们用leading代表首次实行，trailling代表结束后是否再执行一次
+  //实现思路：一种是时间戳  一种是定时器
+  var count = 1;
+  var container = document.getElementById('container');
+  var cancel = document.getElementById('cancel');
+
+  //使用时间戳
+ function throttle(func,wait) {
+   var prv = 0,args,context;
+   return function () {
+     var now = +new Date();
+     args = arguments;
+     context = this;
+     if(now - prv > wait){
+       func.apply(context, args);
+       prv = now;
+     }
+   }
+ }
+
+  function getUserAction(e) {
+    console.log(e);
+    container.innerHTML = count++;
+  };
+
+  var setUseAction  = throttle(getUserAction,1000,true);
+
+  container.onmousemove = setUseAction;
+  document.getElementById("cancel").addEventListener('click', function(){
+    setUseAction.cancel();
+  })
+</script>
+</body>
+
+</html>
