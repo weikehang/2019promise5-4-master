@@ -21,7 +21,7 @@
 
 // compose 组合
 
-function sum(a,b){
+/*function sum(a,b){
     return a+b;
 }
 function add$(str){
@@ -29,7 +29,7 @@ function add$(str){
 }
 function len(str){
     return str.length
-}
+}*/
 // redux中间件的原理 
 // function compose(...fns){ // 剩余运算符,剩余运算符只能放在参数的最后的位置
 //     return function(...args){
@@ -83,7 +83,7 @@ Array.prototype.reduce = function(callback,prev){
 // reduce 在内部会自动循环
 let r1 = [1,2,3,4,5].reduce((previousValue,currentValue,currentIndex,arrary)=>{
     return previousValue+currentValue;
-});
+},10);
 console.log(r1);
 
 // forEach map some 看是否有true  every 是否有false  filter 过滤返回true表示留下

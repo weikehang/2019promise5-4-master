@@ -7,19 +7,12 @@
 
   <script type="text/javascript" src="Blowfish.js"></script>
   <script type="text/javascript" src="http://yandex.st/jquery/1.4.2/jquery.min.js"></script>
+  <script src="https://cdn.bootcss.com/jsencrypt/3.0.0-rc.1/jsencrypt.js"></script>
   <!--  <script type="text/javascript" src="jquery.blowfish.js"></script>-->
 </head>
 <body>
-<form>
-  <textarea name="text" rows="12" cols="70"></textarea><br/>
-  <input type="text" name="password" size="56" /><br/>
-  <input type="submit" name="encrypt" value="11111">
-  <input type="submit" name="decrypt" value="222"><br/>
-  <textarea name="result" rows="12" cols="70"></textarea>
-</form>
-
 <script type="text/javascript">
-  $(function() {
+ /* $(function() {
     $('input[name=encrypt]').submit(function(event) {
       event.preventDefault();
     });
@@ -65,7 +58,14 @@
 
       return false;
     });
-  });
+  });*/
+
+ var workId = "DjThVhjOxzhBlImaOj91qpfjqRZPhTtmHK9nc62zMRpsRvE4+aKTbo/Z3Y1ICrvD+nuoKPA+hfYHz1NS45knY9ygN5CnsVQvaSF0rDwmcSPlGulB/sFkw4s9iKQ8/6JAjPsVmpvQRBIiDIiMA+j5+zqLSnUFn2l2dGm2rJ7Gx6c=";
+ var decrypt = new JSEncrypt();
+ console.log(decrypt)
+     decrypt.setPrivateKey("MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCiyCi886B7ghh3VYeCl0ea6L1UXY7NCHT+hpGjIQeyMtOR6T5msrVWNaERll7sFxTfGQ8qqZOq36VSjsbOHAjBOssaG1l4KGkm3Ja76ZwL6ZWsHeejzI4i7uRKJEpWxpvn+04b6FltamoG6r8QvLmMef0m9bI9Rz/0phsBL2S39QIDAQAB");
+     var res = decrypt.decrypt(workId);
+     console.log(res)
 </script>
 
 </body>

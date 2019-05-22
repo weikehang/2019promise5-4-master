@@ -1,17 +1,19 @@
 // spread 展开运算符号 // ... 只能展开一层.
 //浅拷贝 拷贝的时候是带着空间拷贝的，深拷贝 就是整个重新拷贝了一份
-let o = {room:10}
+/*let o = {room:10};
 let school = {room:o};
 let my = {money:100};
 // let obj = Object.assign(school,my)
 let obj = {...school,...my}  // 
 o.room = 100;
-console.log(obj);
+console.log(obj);*/
 
 // 如何实现对象的深拷贝
+/*
 let obj = {a:{a:{a:1,fn:function(){},a:undefined,reg:/\d+/}}};
 let a = JSON.parse(JSON.stringify(obj)); 
 console.log(a);
+*/
 
 // 如何实现一个深拷贝 递归+类型判断
 // instanceof原理 判断当前__proto__ 是否有 RegExp.prototype

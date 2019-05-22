@@ -17,7 +17,7 @@ Object.defineProperty(obj,'a',{
 obj.a =200;
 console.log(obj.a);
 
-let obj = {
+/*let obj = {
     _a:100,
     get a(){
         return this._a;
@@ -27,7 +27,7 @@ let obj = {
     }
 }
 obj.a = 200;
-console.log(obj.a);
+console.log(obj.a);*/
 
 
 // vue 里面的特点 响应式的数据变化 如果数据变化了 更新视图
