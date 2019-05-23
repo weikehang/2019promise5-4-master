@@ -8,7 +8,7 @@
 </head>
 <body>
     <script>
-        console.log(1);
+        /*console.log(1);
         let channel = new MessageChannel();
         let p1 = channel.port1
         let p2 = channel.port2;
@@ -19,7 +19,25 @@
         p2.onmessage = function(e){
             console.log(e.data);
         }
-        console.log(3);
+        console.log(3);*/
+
+        //Channel Messaging API的Channel Messaging接口允许我们创建一个新的消息通道，
+        //并通过它的两个MessagePort 属性发送数据。
+        // 此特性在 Web Worker 中可用。
+        //而且Channel Messaging是异步的
+
+       console.log(1);
+       //返回带有两个MessagePort属性的channel对象
+       let channel = new MessageChannel();
+       let p1 = channel.port1;//只读
+       let p2 = channel.port2;//只读
+
+       p1.postMessage("hello");
+       console.log(2);
+       p2.onmessage = function (e) {
+           console.log(e.data);
+       };
+       console.log(3);
     </script>
 </body>
 </html>

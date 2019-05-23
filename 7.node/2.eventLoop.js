@@ -4,24 +4,24 @@
 // node 分成n个队列
 
 // 1)
-// setImmediate(()=>{
-//     console.log('immediate')
-// });
-// setTimeout(()=>{
-//     console.log('timeout');
-// })
+setImmediate(()=>{
+    console.log('immediate')
+});
+setTimeout(()=>{
+    console.log('timeout');
+})
 
 // 假如node启动时耗时比较长  5ms  
 // 有可能耗时 小于4
 // 看timeout是否达到执行时间
 
 // setTimeout(()=>{
-//     console.log('timeout')
-// })
-// process.nextTick(()=>{
-//     console.log('nextTick'); //  微任务
-// });
-// console.log('hello');
+// //     console.log('timeout')
+// // })
+// // process.nextTick(()=>{
+// //     console.log('nextTick'); //  微任务
+// // });
+// // console.log('hello');
 
 // 2) 
 // const fs = require('fs');
@@ -50,6 +50,7 @@
 //     console.log('timeout2');
 // });
 
+/*
 Promise.resolve().then(()=>{
     console.log('then1');
 });
@@ -57,3 +58,4 @@ Promise.resolve().then(()=>{
 process.nextTick(()=>{
     console.log('nextTick')
 });
+*/
