@@ -11,6 +11,11 @@
   <!--  <script type="text/javascript" src="jquery.blowfish.js"></script>-->
 </head>
 <body>
+<form action="id" method="post" id="paramsForm">
+  <input type="text" name="name" value="22">
+  <input type="text" name="age" value="10">
+  <input type="text" name="ass" value="ddddd">
+</form>
 <script type="text/javascript">
  /* $(function() {
     $('input[name=encrypt]').submit(function(event) {
@@ -66,6 +71,17 @@
      decrypt.setPrivateKey("MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCiyCi886B7ghh3VYeCl0ea6L1UXY7NCHT+hpGjIQeyMtOR6T5msrVWNaERll7sFxTfGQ8qqZOq36VSjsbOHAjBOssaG1l4KGkm3Ja76ZwL6ZWsHeejzI4i7uRKJEpWxpvn+04b6FltamoG6r8QvLmMef0m9bI9Rz/0phsBL2S39QIDAQAB");
      var res = decrypt.decrypt(workId);
      console.log(res)
+
+ var res = $("#paramsForm").serializeArray();
+ var obj = {};
+     res.forEach(function (item,index) {
+       if (item.name === "name") {
+         obj[item.name] = '我是name';
+       }else{
+         obj[item.name] = item.value;
+       }
+     });
+     console.log(obj)
 </script>
 
 </body>

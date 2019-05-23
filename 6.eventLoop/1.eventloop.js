@@ -24,8 +24,14 @@
 
 // [].push()   [].shift();
 
-// 宏任务 (第一次代码执行的环境 script标签 setTimeout ui渲染)  微任务
+// 宏任务 (第一次代码执行的环境 script标签 setTimeout ui渲染)  微任务:promise process.nextTick
 // 单线程（主线程） 工作线程 webworker 辅助线程
+//js执行机制 =》事件循环机制
+//js异步分为两部分，一是宏任务(setTimeout,script, ui渲染)，二是微任务（promise,process.nextTick）
+//默认再浏览器中，js会先执行当前栈中的代码：同步代码，同步代码执行完毕后会清空第一个微任务，执行的过程中会注册一些微任务，在执行下一个宏任务之前清空一次微任务
+//再去执行下一个宏任务
+
+console.log("01")
 
 setTimeout(()=>{
     Promise.resolve().then(()=>{
@@ -44,6 +50,9 @@ setTimeout(() => {
 });
 Promise.resolve().then(()=>{
     console.log('then');
+    setTimeout(function () {
+        console.log("哈哈哈")
+    })
 })
 Promise.resolve().then(()=>{
     console.log('then');
@@ -51,6 +60,9 @@ Promise.resolve().then(()=>{
 Promise.resolve().then(()=>{
     console.log('then');
 });
+
+
+console.log("02")
 // 浏览器中 默认当前栈执行完毕后会清空微任务 ，微任务清空后 取第一个宏任务执行，执行的过程中，会在注册一些微任务，在执行下一个宏任务之前在清空 一次微任务，在去执行下一个宏任务
 
 
@@ -62,3 +74,4 @@ Promise.resolve().then(()=>{
 //  mac 宏任务 setImmediate  > setTimeout  ui script MessageChannel）
 
 // 可以准确知道代码执行的顺序
+

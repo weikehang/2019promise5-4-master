@@ -42,4 +42,4 @@ var Animal = function () {
 Animal(); 
 
 var animal = new Animal('哺乳类');
-console.log(Animal.a()); 
+console.log(Animal.a());

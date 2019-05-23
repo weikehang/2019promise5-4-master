@@ -81,10 +81,10 @@ Array.prototype.reduce = function(callback,prev){
     return prev;
 }
 // reduce 在内部会自动循环
-let r1 = [1,2,3,4,5].reduce((previousValue,currentValue,currentIndex,arrary)=>{
+/*let r1 = [1,2,3,4,5].reduce((previousValue,currentValue,currentIndex,arrary)=>{
     return previousValue+currentValue;
 },10);
-console.log(r1);
+console.log(r1);*/
 
 // forEach map some 看是否有true  every 是否有false  filter 过滤返回true表示留下
 // find 返回true 会把当前项返回 
